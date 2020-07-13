@@ -2,28 +2,22 @@
 <html>
 <head>
   <title>Arduino Client</title>
+  <script type="text/javascript" src="main.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+
   <script type="text/javascript">
-    setInterval(function () {
-      var request = new XMLHttpRequest();
+    document.addEventListener('DOMContentLoaded', function() {
+      var socket = io()
+      var el = document.getElementById("counter")
 
-      request.open('GET', '/api/counter', true);
-
-      request.onload = function() {
-        if (this.status >= 200 && this.status < 400) {
-          var data = JSON.parse(this.response);
-
-          var el = document.getElementById("counter")
-
-          el.innerHTML = data.count;
-        } else {
-          console.log("Error")
-        }
-      };
-      request.send();
-    }, 3000)
+      socket.on('increment', function(data) {
+        el.innerHTML = data.count
+      })
+    })
   </script>
 </head>
 <body>
   Arduino has pinged the server <span id="counter"><%= count %></span>
+  <div id="app"></div>
 </body>
 </html>
